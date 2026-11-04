@@ -1,0 +1,53 @@
+query:
+TITLE-ABS-KEY (
+  ( "load forecasting" OR "energy consumption forecasting" OR "electricity demand forecasting"
+    OR "energy demand prediction" OR "consumption prediction" )
+  AND ( building* OR campus OR universit* )
+  AND ( "deep learning" OR "neural network*" OR lstm OR gru OR "recurrent neural"
+    OR "convolutional neural" OR transformer* )
+  AND ( "short-term" OR "short term" OR "hour-ahead" OR hourly OR "day-ahead" )
+)
+AND PUBYEAR > 2019
+AND DOCTYPE ( ar OR re OR cp )
+AND LANGUAGE ( english )
+
+documentos encontrados apenas com a query: 869
+
+document type: article, reviews
+
+Keywords: serviram para excluir artigos
+Smart Grid
+Smart Power Grids
+Microgrid
+Microgrids
+Demand Response
+Model Predictive Control
+Electric Power Transmission Networks
+Electric Load Dispatching
+Integrated Energy Systems
+Renewable Energy
+Residential Building
+Housing
+Smart Homes
+Domestic Appliances
+Smart Meters
+Weather Forecasting
+Meteorology
+Variational Mode Decomposition
+Empirical Mode Decomposition
+Particle Swarm Optimization
+Optimization Algorithms
+Brain
+Historic Preservation
+Behavioral Research
+Climate Models
+Green Computing
+Digital Storage
+Cooling Load
+Cooling Systems
+Air Conditioning
+HVAC
+
+após filtragem, ficaram 370 artigos para analisar
+
+dos 370, sobraram 25 artigos que servem de base para o trabalho
