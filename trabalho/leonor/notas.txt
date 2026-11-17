@@ -1,15 +1,43 @@
-ficheiros trabalhados:
-UVTgv_elec_ABR_2019_2020.csv
-UVTgv_elec_C_2019_2020.csv
-UVTgv_elec_ICSTM_2019_2020.csv
+Ficheiros trabalhados:
+- UVTgv_elec_ABR_2019_2020.csv
+- UVTgv_elec_C_2019_2020.csv
+- UVTgv_elec_ICSTM_2019_2020.csv
+
+Assume-se que começa a 1 de janeiro às 00:00 por não estar explícita a data que começa
+Variável a prever: consumo horário de eletricidade de cada edifício
+Unidade: kWh por hora
 
 Carregamento:
-São 52560 registos, pois são 3 edifícios e 2 anos, cada um com 8760 horas registadas
+- São 52560 registos, pois são 3 edifícios e 2 anos, cada um com 8760 horas registadas
 Ou seja: 3 * 2 * 8760 = 52560
-Dias da semana: segunda começa no 0
+- Dias da semana: segunda começa no 0, e vai assim em diante
+- Os dias vão de 1 de janeiro de 2019 até 30 de dezembro de 2020
+- Tem um dia a menos em 2020 (ano bissexto)
+
+Qualidade dos dados:
+- Não há valores em falta
+- Não há datas repetidas
+- Vai de hora em hora (00:00, 01:00, ...)
+- Os zeros do ICSTM são 669 no total (17 em 2019 e 652 em 2020)
+- O ABR e o C não têm zeros
+
+Decisões tomadas:
+- Foi usada como variável o consumo da semana anterior, pois o consumo repete-se de semana para 
+semana, apanhando o ciclo semanal para não depender de datas, devido à incerteza das datas 
+do calendário
+- Foram usadas 5 variáveis: a hora do dia e o consumo da hora anterior, do dia anterior e 
+da semana anterior. O consumo recente ajuda a prever a hora seguinte
+- Zeros até 3 horas seguidas foi feita uma interpolação linear (valores intermédios entre o consumo 
+anterior e o seguinte)
+- Zeros com mais de três horas seguidas foram mantidos e assinalados, porque podem ser paragens
+reais do edifício e não falhas de registo
+- Valores atípicos foram assinalados, pois trata-se de um comportamento real dos dados
+- Os primeiros 7 dias foram removidos por não terem consumo da semana anterior
+- A hora do dia foi representada como a posição num relógio de 24 horas, para 
+a hora 23 ficar perto da hora 0
 
 Interpretações finais:
-O consumo caiu cerca de 27 a 29 % em 2020 nos três edifícios (ABR −28,6 %, C −27,2 %, ICSTM −27,2 %), o que indica uma mudança de regime.
-Os picos diários são diferentes por edifício - ABR por volta das 10h–11h, C das 21h–22h e ICSTM por volta das 7h.
-Há ciclos diários e semanais claros, confirmados pela autocorrelação nos lags de 24h e 168h.
-O ICSTM tem zeros, sobretudo em 2020 (652 horas, com um bloco de 64 horas no fim de agosto).
+- O ICSTM é o edifício mais difícil de prever. O consumo muda mais de hora para hora e tem
+mais valores atípicos.
+- O ABR e o C são mais regulares, por isso é de esperar que sejam mais fáceis de prever.
+- Como 2020 tem muito menos consumo, a forma de dividir treino e teste vai influenciar os resultados.
