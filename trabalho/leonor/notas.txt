@@ -3,16 +3,15 @@ Ficheiros trabalhados:
 - UVTgv_elec_C_2019_2020.csv
 - UVTgv_elec_ICSTM_2019_2020.csv
 
-Assume-se que começa a 1 de janeiro às 00:00 por não estar explícita a data que começa
 Variável a prever: consumo horário de eletricidade de cada edifício
 Unidade: kWh por hora
 
 Carregamento:
 - São 52560 registos, pois são 3 edifícios e 2 anos, cada um com 8760 horas registadas
-Ou seja: 3 * 2 * 8760 = 52560
 - Dias da semana: segunda começa no 0, e vai assim em diante
-- Os dias vão de 1 de janeiro de 2019 até 30 de dezembro de 2020
-- Tem um dia a menos em 2020 (ano bissexto)
+- Os ficheiros não têm datas, por isso as datas foram reconstruídas pela ordem das linhas, 
+de 1 de janeiro de 2019 a 31 de dezembro de 2020 (29/02 não incluído, 
+2020 tratado como um ano de 365 dias)
 
 Qualidade dos dados:
 - Não há valores em falta
@@ -20,24 +19,26 @@ Qualidade dos dados:
 - Vai de hora em hora (00:00, 01:00, ...)
 - Os zeros do ICSTM são 669 no total (17 em 2019 e 652 em 2020)
 - O ABR e o C não têm zeros
+- O consumo médio desceu cerca de 27–29% de 2019 para 2020 nos três edifícios
 
 Decisões tomadas:
-- Foi usada como variável o consumo da semana anterior, pois o consumo repete-se de semana para 
-semana, apanhando o ciclo semanal para não depender de datas, devido à incerteza das datas 
-do calendário
-- Foram usadas 5 variáveis: a hora do dia e o consumo da hora anterior, do dia anterior e 
-da semana anterior. O consumo recente ajuda a prever a hora seguinte
-- Zeros até 3 horas seguidas foi feita uma interpolação linear (valores intermédios entre o consumo 
-anterior e o seguinte)
-- Zeros com mais de três horas seguidas foram mantidos e assinalados, porque podem ser paragens
-reais do edifício e não falhas de registo
-- Valores atípicos foram assinalados, pois trata-se de um comportamento real dos dados
-- Os primeiros 7 dias foram removidos por não terem consumo da semana anterior
-- A hora do dia foi representada como a posição num relógio de 24 horas, para 
-a hora 23 ficar perto da hora 0
+- Foram usadas 4 variáveis: a hora do dia (representada em seno e cosseno), o consumo da
+hora anterior e o consumo da mesma hora do dia anterior. O consumo recente ajuda a prever
+a hora seguinte
+- A hora do dia foi representada como a posição num relógio de 24 horas, para a hora 23 
+ficar perto da hora 0
+- Não foram usadas variáveis de calendário (dia da semana, feriados, mês)
+- Zeros até 3 horas seguidas: foi feita uma interpolação linear (valores intermédios entre o 
+consumo anterior e o seguinte). No ICSTM foram 248 horas
+- Zeros com mais de três horas seguidas foram mantidos e assinalados (421 horas no ICSTM), 
+porque podem ser paragens reais do edifício e não falhas de registo
+- Consideraram-se atípicos os valores a mais de 3 desvios padrão da média do consumo da
+mesma hora e dia da semana. Foram assinalados, mas mantidos, por poderem corresponder 
+a consumo real
+- As primeiras 24 horas (1 de janeiro de 2019) ficam na tabela, mas sem o consumo do dia
+anterior. Servem só de histórico para as horas seguintes
 
 Interpretações finais:
-- O ICSTM é o edifício mais difícil de prever. O consumo muda mais de hora para hora e tem
-mais valores atípicos.
-- O ABR e o C são mais regulares, por isso é de esperar que sejam mais fáceis de prever.
-- Como 2020 tem muito menos consumo, a forma de dividir treino e teste vai influenciar os resultados.
+- O ICSTM é o edifício mais difícil de prever. O consumo muda mais de hora para hora, 
+tem zeros e, em 2020, mais valores atípicos
+- O ABR e o C são mais regulares, por isso é de esperar que sejam mais fáceis de prever
